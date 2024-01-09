@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location'; // Import the Location module
 
 export default function App() {
   return (
@@ -19,12 +18,11 @@ export default function App() {
             latitude: 39.9208636,
             longitude: -105.1162414,
           }}
-          title="Marker Title"
-          description="Marker Description"
+          title="Me"
+          description="You Are Here"
         />
       </MapView>
     </View>
-
   );
 }
 

@@ -14,3 +14,4 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Create first Light Disc course (local and hardcoded)
 * Create a page for tracking & displaying throws
 * Add the concept of user profiles
+* Remove .env from git track and move to eas.json

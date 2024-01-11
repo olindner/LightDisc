@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 export default function App() {
   return (
     <View style={styles.container}>
+      <Text>Hello!</Text>
       <MapView style={styles.map} 
       initialRegion={{
         latitude: 39.9208636,

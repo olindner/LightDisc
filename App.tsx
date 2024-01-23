@@ -7,6 +7,8 @@ import { LocationObjectCoords } from 'expo-location';
 export default function App() {
   const [location, setLocation] = useState<LocationObjectCoords | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const HARDCODEDStartLat = 39.92207;
+  const HARDCODEDStartLong = -105.11797;
 
   useEffect(() => {
     (async () => {
@@ -16,15 +18,20 @@ export default function App() {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location.coords);
+      let currentPos = await Location.getCurrentPositionAsync({});
+      
+      // FOR TESTING:
+      currentPos.coords.latitude = HARDCODEDStartLat;
+      currentPos.coords.longitude = HARDCODEDStartLong;
+      //
+
+      setLocation(currentPos.coords);
     })();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style ={styles.text}>Lat: {location?.latitude}, long: {location?.longitude}</Text>
-      {errorMsg && <Text>"Error: "{errorMsg}</Text>}
+      <Text style ={styles.text}>Lat: {location?.latitude}, long: {location?.longitude}, Error: {errorMsg}</Text>
       {location && (
         <MapView
           style={styles.map}

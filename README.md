@@ -11,7 +11,7 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 # Tasks
 
 ## Completed
-* Initial App setup (for iOS, Android, and eventually mobile)
+* Initial App setup (for iOS, Android, and eventually webapp)
 * Authorized with Google Maps API and displays basic (static) Map view
 * Initialize map to display current phone location
 * Researched EAS and Free Provisioning

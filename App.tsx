@@ -3,12 +3,11 @@ import { StyleSheet, View, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationObjectCoords } from 'expo-location';
+import Coordinates from './Map.json';
 
 export default function App() {
   const [location, setLocation] = useState<LocationObjectCoords | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const HARDCODEDStartLat = 39.92207;
-  const HARDCODEDStartLong = -105.11797;
 
   useEffect(() => {
     (async () => {
@@ -21,8 +20,8 @@ export default function App() {
       let currentPos = await Location.getCurrentPositionAsync({});
       
       // FOR TESTING:
-      currentPos.coords.latitude = HARDCODEDStartLat;
-      currentPos.coords.longitude = HARDCODEDStartLong;
+      currentPos.coords.latitude = Coordinates.MapCenter.lat;
+      currentPos.coords.longitude = Coordinates.MapCenter.long;
       //
 
       setLocation(currentPos.coords);
@@ -31,24 +30,24 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style ={styles.text}>Lat: {location?.latitude}, long: {location?.longitude}, Error: {errorMsg}</Text>
+      <Text style ={styles.errorText}>Error: {errorMsg}</Text>
       {location && (
         <MapView
           style={styles.map}
           initialRegion={{
             latitude: location.latitude,
             longitude: location.longitude,
-            latitudeDelta: 0.0122,
-            longitudeDelta: 0.0121,
+            latitudeDelta: 0.003,
+            longitudeDelta: 0.003,
           }}
         >
           <Marker
             coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
+              latitude: Coordinates.Coor1.lat,
+              longitude: Coordinates.Coor1.long,
             }}
-            title="Me"
-            description="You Are Here"
+            title="Coord1"
+            description="1"
           />
         </MapView>
       )}
@@ -62,11 +61,11 @@ const styles = StyleSheet.create({
   },
   map: {
     width: '100%',
-    height: '90%',
+    height: '95%',
   },
-  text: {
+  errorText: {
     flex: 1,
-    paddingTop: 50,
-    textAlign: 'right',
+    paddingTop: 20,
+    textAlign: 'left',
   },
 });

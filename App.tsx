@@ -1,11 +1,50 @@
-import React, {useEffect, useState} from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+// Expo Imports
 import * as Location from 'expo-location';
 import { LocationObjectCoords } from 'expo-location';
-import Coordinates from './Map.json';
 
-export default function App() {
+// React Imports
+import React, {useEffect, useState} from 'react';
+import { StyleSheet, View, Text, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
+import MapView, { Marker } from 'react-native-maps';
+
+// Project Imports
+import Coordinates from './Map.json';
+import { StackParamList } from './types';
+
+type HomeProps = NativeStackScreenProps<StackParamList, 'Home'>;
+
+const HomeComponent : React.FC<HomeProps> = (props) => {
+  return (
+    <View style={styles.home}>
+      <Button 
+        title='View Score' 
+        onPress=
+        {
+          () => props.navigation.push("Score")
+        }
+      />
+      <Button 
+        title='View Map' 
+        onPress=
+        {
+          () => props.navigation.push("Map")
+        }
+      />
+    </View>
+  );
+};
+
+function ScoreComponent() {
+  return (
+    <View style={styles.home}>
+      <Text>Score!</Text>
+    </View>
+  );
+}
+
+function MapComponent() {
   const [location, setLocation] = useState<LocationObjectCoords | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -55,17 +94,39 @@ export default function App() {
   );
 }
 
+const Stack = createNativeStackNavigator<StackParamList>();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Home' component={HomeComponent} />
+        <Stack.Screen name='Score' component={ScoreComponent} />
+        <Stack.Screen name='Map' component={MapComponent} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: {
+  container: 
+  {
     flex: 1,
   },
-  map: {
-    width: '100%',
-    height: '95%',
-  },
-  errorText: {
+  errorText: 
+  {
     flex: 1,
-    paddingTop: 20,
     textAlign: 'left',
   },
+  home: 
+  {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  map: 
+  {
+    width: '100%',
+    height: '95%',
+  }
 });

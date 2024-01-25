@@ -1,6 +1,7 @@
 // Expo Imports
 import { LocationObjectCoords } from 'expo-location';
 import * as Location from 'expo-location';
+import { Ionicons } from '@expo/vector-icons';
 
 // React Imports
 import React, { useEffect, useState } from 'react';
@@ -9,6 +10,7 @@ import MapView, { Marker } from 'react-native-maps';
 
 // Project Imports
 import Coordinates from './Map.json';
+import GPSCoordinates from './MapData.json';
 import styles from './styles';
 
 function MapComponent() {
@@ -47,14 +49,15 @@ function MapComponent() {
               longitudeDelta: 0.003,
             }}
           >
-            <Marker
-              coordinate={{
-                latitude: Coordinates.Coor1.lat,
-                longitude: Coordinates.Coor1.long,
-              }}
-              title="Coord1"
-              description="1"
-            />
+            {GPSCoordinates && GPSCoordinates.Points.map(marker => (
+                <Marker
+                    coordinate={{ latitude: marker.latitude, longitude: marker.longitude}}
+                    key={marker.id}
+                    title={marker.title}
+                >
+                    <Ionicons name="golf" size={24} color="red" />
+                </Marker>
+            ))}
           </MapView>
         )}
       </View>

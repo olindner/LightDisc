@@ -20,11 +20,12 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Researched EAS and Free Provisioning
 * Moved coordinate to be stored in JSON
 * Implement basic routing using built in Expo Router (stack)
-* Create a page for tracking & displaying throws
 * Refactor and break up Views/Components into separate files
+* Add Golf Goal icon
+* Write method to shred GPS data from JSON into Markers
 
 ## Doing
-* Write method to shred GPS data from JSON into Markers
+* Create a page for tracking & displaying throws
   
 ## To-Do
 * Update location on a configurable polling basis

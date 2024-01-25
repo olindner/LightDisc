@@ -2,6 +2,9 @@
 A mobile app used to GeoLocate and track the score of players that play LightDisc courses in local neighborhoods.
 
 ## How to Run (Locally)
+* Make sure you have NodeJS, npm, and nvm installed
+    * Make sure you are using `node version 16.20.2`
+        * If not, run `nvm install 16` and then `use version 16`  of node
 * Clone the repo and run the following command in the root directory of the project:
     * `npx expo-cli start -c`
 * Then press "i" to start iOS simulator (for local development)
@@ -27,3 +30,6 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Create first Light Disc course (local and hardcoded)
 * Add the concept of user profiles
 * Remove .env from git track and move to eas.json
+
+## To-Do
+* Find a way to pull Google Map Saved Map and shred Saved Points into JSON

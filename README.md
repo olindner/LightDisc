@@ -21,9 +21,9 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Moved coordinate to be stored in JSON
 * Implement basic routing using built in Expo Router (stack)
 * Create a page for tracking & displaying throws
+* Refactor and break up Views/Components into separate files
 
 ## Doing
-* Refactor and break up Views/Components into separate files
 * Write method to shred GPS data from JSON into Markers
   
 ## To-Do

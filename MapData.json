@@ -1,0 +1,20 @@
+{
+  "Points": 
+  [
+    {
+      "latitude": 39.9220469,
+      "longitude": -105.1176586,
+      "description": "Start"
+    },
+    {
+      "latitude": 39.922059,
+      "longitude": -105.1171318,
+      "description": "Hole 1"
+    },
+    {
+      "latitude": 39.9220852,
+      "longitude": -105.11647,
+      "description": "Hole 2"
+    }
+  ]
+}

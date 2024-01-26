@@ -3,8 +3,12 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 
 ## How to Run (Locally)
 * Make sure you have NodeJS, npm, and nvm installed
-    * Make sure you are using `node version 16.20.2`
+    * Install NodeJS [here](https://nodejs.org/en/download/) which includes npm
+    * Install NVM [here](https://sourceforge.net/projects/nvm-for-windows.mirror/) for controlling node versions
+    * Restart/open a new terminal/bash instance to ensure $path updated
+    * Run `node -v` and ensure it is version 16
         * If not, run `nvm install 16` and then `nvm use 16` of node
+        * Rerun `node -v` and ensure it reads as `16.20 (will likely require another terminal/bash restart)
 * Clone the repo and run the following command in the root directory of the project:
     * `npx expo-cli start -c`
 * Then press "i" to start iOS simulator (for local development)

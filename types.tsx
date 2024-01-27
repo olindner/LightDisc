@@ -3,3 +3,7 @@ export type StackParamList = {
   Score: undefined,
   Map: undefined
 }
+
+export type CourseData = {
+  [courseId: string]: Array<{ courseScore: number; timestamp: string }>;
+};

@@ -1,14 +1,13 @@
 {
   "name": "lightdisc",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "engines": {
     "node": "<17"
   },
   "scripts": {
-    "start": "npx expo-cli start",
-    "android": "npx expo-cli start --android",
-    "ios": "npx expo-cli start --ios",
+    "start": "npx expo-cli start --dev-client",
+    "android": "npx expo-cli run:android",
+    "ios": "npx expo-cli run:ios",
     "web": "npx expo-cli start --web"
   },
   "dependencies": {
@@ -16,7 +15,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@types/react": "~18.2.14",
-    "expo": "^49.0.21",
+    "expo": "~49.0.18",
     "expo-location": "~16.1.0",
     "expo-status-bar": "~1.6.0",
     "expo-updates": "^0.18.19",
@@ -29,7 +28,8 @@
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "expo-splash-screen": "~0.20.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

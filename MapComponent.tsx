@@ -4,6 +4,7 @@ import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
 
 // React Imports
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
@@ -12,33 +13,53 @@ import MapView, { Marker } from 'react-native-maps';
 import Coordinates from './Map.json';
 import GPSCoordinates from './MapData.json';
 import styles from './styles';
+import { setDummyData, setRecentCourseIdAsync } from './Utilities';
+
+const getLocationPermissionsAsync = async ( setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>) => {
+  let { status } = await Location.requestForegroundPermissionsAsync();
+  if (status !== 'granted') {
+    setErrorMsg('Permission to access location was denied');
+    return;
+  }
+}
+
+const setLocationAsync = async (setLocation:React.Dispatch<React.SetStateAction<LocationObjectCoords | null>>) => {
+  let currentPos = await Location.getCurrentPositionAsync({});
+        
+  // FOR TESTING:
+  currentPos.coords.latitude = Coordinates.MapCenter.lat;
+  currentPos.coords.longitude = Coordinates.MapCenter.long;
+  //
+
+  setLocation(currentPos.coords);
+}
 
 function MapComponent() {
     const [location, setLocation] = useState<LocationObjectCoords | null>(null);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const [recentCourseId, setRecentCourseId] = useState<string>("");
   
-    useEffect(() => {
+    // First render
+    useState(() => {
+      console.log("useState Map Component");
       (async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          setErrorMsg('Permission to access location was denied');
-          return;
+        await getLocationPermissionsAsync(setErrorMsg);
+        await setLocationAsync(setLocation);
+
+
+        if (!recentCourseId || recentCourseId == '') {
+          console.log("Prob not");
+          await setRecentCourseIdAsync(setRecentCourseId);
         }
-  
-        let currentPos = await Location.getCurrentPositionAsync({});
-        
-        // FOR TESTING:
-        currentPos.coords.latitude = Coordinates.MapCenter.lat;
-        currentPos.coords.longitude = Coordinates.MapCenter.long;
-        //
-  
-        setLocation(currentPos.coords);
+        else {
+          console.log("recentCourseId already set!");
+        }
       })();
-    }, []);
+    });
   
     return (
       <View style={styles.container}>
-        <Text style ={styles.errorText}>Error: {errorMsg}</Text>
+        <Text style ={styles.errorText}>recentCourseId: {recentCourseId}</Text>
         {location && (
           <MapView
             style={styles.map}

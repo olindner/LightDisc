@@ -31,9 +31,11 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Refactor and break up Views/Components into separate files
 * Add Golf Goal icon
 * Write method to shred GPS data from JSON into Markers
+* Big refactors with data flow, storage, and ScoreComponent
 
 ## Doing
 * Create a page for tracking & displaying throws
+* Refactor MapComponent
   
 ## To-Do
 * Update location on a configurable polling basis

@@ -25,7 +25,7 @@ export const setRecentCourseIdAsync = async (setRecentCourseId:React.Dispatch<Re
   const key = "recentCourseId";
   var recentCourseId = await AsyncStorage.getItem(key);
   if (recentCourseId == null) {
-    throw Error("recentCourseId is null");
+    throw new Error("recentCourseId is null");
   }
   setRecentCourseId(recentCourseId);
   return recentCourseId;

@@ -18,6 +18,24 @@
       "latitude": 39.9220852,
       "longitude": -105.11647,
       "title": "Hole 2"
+    },
+    {
+      "id": 3,
+      "latitude": 39.9220407,
+      "longitude": -105.1158876,
+      "title": "Hole 3"
+    },
+    {
+      "id": 4,
+      "latitude": 39.922115,
+      "longitude": -105.1154716,
+      "title": "Hole 4"
+    },
+    {
+      "id": 5,
+      "latitude": 39.9221564,
+      "longitude": -105.1145177,
+      "title": "Hole 5"
     }
   ]
 }

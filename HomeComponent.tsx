@@ -1,17 +1,23 @@
 // React Imports
-import React from 'react';
+import React, {useState } from 'react';
 import { Button, View } from 'react-native';
-import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 // Project Imports
+import { setDummyData } from './Utilities';
 import { StackParamList } from './types';
 import styles from './styles';
 
-
 type HomeProps = NativeStackScreenProps<StackParamList, 'Home'>;
-const Stack = createNativeStackNavigator<StackParamList>();
 
 const HomeComponent : React.FC<HomeProps> = (props) => {
+
+  useState(() => {
+    setDummyData()
+    .catch((error) => console.log(`error HomeComponent!!!\n ${error}`))
+    .finally(() => {});
+  });
+
   return (
     <View style={styles.home}>
       <Button 

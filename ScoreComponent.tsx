@@ -1,66 +1,46 @@
 // React Imports
-import React, { useEffect, useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUniqueId } from 'react-native-device-info';
+import { DataTable } from 'react-native-paper';
 
 // Project Imports
-import { CourseData } from './types';
-
-// Assuming courseId is available in this component, otherwise you'll need to pass it as a prop
-const courseId = 'course1'; // Replace with actual course ID
+import { retrieveCurrentScoresheet, setRecentCourseIdAsync } from './Utilities';
 
 function ScoreComponent() {
-  const [score, setScore] = useState(0);
-  const [deviceId, setDeviceId] = useState('');
+  const [score, setScore] = useState<number>(0);
+  const [recentCourseId, setRecentCourseId] = useState<string>("test");
+  const [currentScoresheet, setCurrentScoresheet] = useState<Array<number>>([]);
 
   useState(() => {
-    const setDeviceIdAsync = async () => {
-      const id = await getUniqueId();
-      setDeviceId(id);
-    };
-    setDeviceIdAsync();
+    (async () => {
+      await setRecentCourseIdAsync(setRecentCourseId)
+      .then(async() => {
+        var ss = await retrieveCurrentScoresheet() as Array<number>;
+        if (ss == null) {
+          ss = Array(0).fill(0);
+          AsyncStorage.setItem("currentScoresheet", JSON.stringify(ss));
+        }
+        setCurrentScoresheet(ss);
+      });
+    })();
   });
-
-  useEffect(() => {
-    if (deviceId) {
-      AsyncStorage.getItem(deviceId).then(storedData => {
-        if (storedData !== null) {
-          const data = JSON.parse(storedData);
-          if (data[courseId] && data[courseId].length > 0) {
-            setScore(data[courseId][data[courseId].length - 1].score);
-          }
-        }
-      });
-    }
-  }, [deviceId]);
-
-  const incrementScore = () => {
-    const newScore = score + 1;
-    setScore(newScore);
-
-    if (deviceId) {
-      const timestamp = new Date().toISOString();
-      // courseData is device-specfic (eventually user-specific)
-      AsyncStorage.getItem(deviceId).then(courseData => {
-        let data: CourseData = {};
-        if (courseData !== null) {
-          data = JSON.parse(courseData);
-        }
-        if (!data[courseId]) {
-          data[courseId] = [];
-        }
-        data[courseId].push({ courseScore: newScore, timestamp: timestamp });
-        AsyncStorage.setItem(deviceId, JSON.stringify(data));
-      });
-    }
-  };
 
   return (
     <View>
-      <Text>Score: {score}</Text>
-      <Text>DeviceId: {deviceId}</Text>
-      <Button title="Increment Score" onPress={incrementScore} />
+      <DataTable>
+        <DataTable.Header>
+          <DataTable.Title>Hole</DataTable.Title>
+          <DataTable.Title numeric>Strokes</DataTable.Title>
+        </DataTable.Header>
+
+        {currentScoresheet.slice(1).map((item:number, index:number) => (
+          <DataTable.Row key={index}>
+            <DataTable.Cell>{index+1}</DataTable.Cell>
+            <DataTable.Cell numeric>{item}</DataTable.Cell>
+          </DataTable.Row>
+        ))}
+      </DataTable>
     </View>
   );
 }

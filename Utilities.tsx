@@ -22,11 +22,30 @@ export const setDummyData = async () => {
 
 export const setRecentCourseIdAsync = async (setRecentCourseId:React.Dispatch<React.SetStateAction<string>>) => {
   // Don't want try/catch here because it is handled by caller
-  const key = "recentCourseId";
-  var recentCourseId = await AsyncStorage.getItem(key);
+  var recentCourseId = await AsyncStorage.getItem("recentCourseId");
   if (recentCourseId == null) {
     throw new Error("recentCourseId is null");
   }
   setRecentCourseId(recentCourseId);
   return recentCourseId;
+}
+
+export const retrieveCurrentScoresheet = async (hole?:number) => {
+  try {
+    let ss = await AsyncStorage.getItem("currentScoresheet");
+    let scoresheetArray: Array<number>;
+    if (ss == null) {
+      return ss;
+    }
+    scoresheetArray = JSON.parse(ss);
+
+    if (typeof hole !== "undefined") {
+      return scoresheetArray[hole];
+    }
+
+    return scoresheetArray;
+  } 
+  catch (error) {
+    console.log(`Error when retrieving Stroke Scoresheet: ${error}`);
+  }
 }

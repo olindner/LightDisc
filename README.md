@@ -34,9 +34,10 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Big refactors with data flow, storage, and ScoreComponent
 * Create a page for tracking & displaying throws
 * Refactor MapComponent
+* Make ScoreComponent page show chart of current scores
 
 ## Doing
-* Make ScoreComponent page show chart of current scores
+* ?
   
 ## To-Do
 * Refactor to using SQLite instead of asyncstorage

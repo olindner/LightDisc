@@ -10,7 +10,6 @@ import { Pressable, Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 // Project Imports
-import Coordinates from './Map.json';
 import GPSCoordinates from './MapData.json';
 import styles from './styles';
 import { retrieveCurrentScoresheet, setRecentCourseIdAsync } from './Utilities';
@@ -38,8 +37,9 @@ const setLocationAsync = async (setLocation:React.Dispatch<React.SetStateAction<
   let currentPos = await Location.getCurrentPositionAsync({});
         
   // FOR TESTING:
-  currentPos.coords.latitude = Coordinates.MapCenter.lat;
-  currentPos.coords.longitude = Coordinates.MapCenter.long;
+  // Todo: create method to calculate this center instead of hardcoding
+  currentPos.coords.latitude = GPSCoordinates.MapCenter.lat;
+  currentPos.coords.longitude = GPSCoordinates.MapCenter.long;
   //
 
   setLocation(currentPos.coords);

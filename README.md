@@ -37,11 +37,23 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Make ScoreComponent page show chart of current scores
 
 ## Doing
-* ?
+* Update ScoreComponent styling
+* Add ability to store/read more course data in JSON file
   
 ## To-Do
+* Debug why buttons overlap or skew text (Add and Save)
 * Refactor to using SQLite instead of asyncstorage
 * Update location on a configurable polling basis
 * Create first Light Disc course (local and hardcoded)
 * Add the concept of user profiles
 * Remove .env from git track and move to eas.json
+# Live Tracking Module (Version 2)
+* Use some sort of IOT device, attached to the disc
+* Either Bluetooth (e.g. AirTag) or GPS (e.g. ?)
+* Should be able to pair phone device to specific tracker (screen design tbd)
+* Should be able to see device location in addition to phone's location
+* Distance/direction display optional
+# Live Creation Module (Version 3)
+* Should be able to use App interface to create a new course to be saved
+* Likely will require Cloud solution to store created maps, and ability to download/source them
+* Easiest option is likely standing under (or pointing at) light post and tapping a button to add

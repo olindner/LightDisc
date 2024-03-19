@@ -30,13 +30,13 @@ function ScoreComponent() {
     <View>
       <DataTable>
         <DataTable.Header>
-          <DataTable.Title>Hole</DataTable.Title>
+          <DataTable.Title numeric>{recentCourseId} - Hole #</DataTable.Title>
           <DataTable.Title numeric>Strokes</DataTable.Title>
         </DataTable.Header>
 
         {currentScoresheet.slice(1).map((item:number, index:number) => (
           <DataTable.Row key={index}>
-            <DataTable.Cell>{index+1}</DataTable.Cell>
+            <DataTable.Cell numeric>{index+1}</DataTable.Cell>
             <DataTable.Cell numeric>{item}</DataTable.Cell>
           </DataTable.Row>
         ))}

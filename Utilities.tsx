@@ -13,7 +13,10 @@ export const setDummyData = async () => {
   };
 
   try {
-    AsyncStorage.multiSet([[recentCourseKey, recentCourseValue], [courseArrayKey, JSON.stringify(courseArrayValue)]])
+    await AsyncStorage.clear()
+    .then(() => {
+      AsyncStorage.multiSet([[recentCourseKey, recentCourseValue], [courseArrayKey, JSON.stringify(courseArrayValue)]])
+    });
     
   } catch (error) {
     console.log(`Error when setting Dummy data: ${error}`);
@@ -30,12 +33,14 @@ export const setRecentCourseIdAsync = async (setRecentCourseId:React.Dispatch<Re
   return recentCourseId;
 }
 
+// Could remove the unused optional param, but leaving in case needed in the future
 export const retrieveCurrentScoresheet = async (hole?:number) => {
   try {
     let ss = await AsyncStorage.getItem("currentScoresheet");
+
     let scoresheetArray: Array<number>;
     if (ss == null) {
-      return ss;
+      return Array<number>();
     }
     scoresheetArray = JSON.parse(ss);
 

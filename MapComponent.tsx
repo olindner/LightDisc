@@ -1,7 +1,7 @@
 // Expo Imports
 import { LocationObjectCoords } from 'expo-location';
 import * as Location from 'expo-location';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 // React Imports
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -62,66 +62,56 @@ function MapComponent() {
         .then(() => setRecentCourseIdAsync(setRecentCourseId))
         .then(async() => {
           var ss = await retrieveCurrentScoresheet() as Array<number>;
-          if (ss == null) {
+
+          if (ss.length == 0) {
             ss = Array(totalHoles).fill(0);
+            AsyncStorage.setItem("currentScoresheet", JSON.stringify(ss));
           }
+
           setCurrentScoresheet(ss);
         });
       })();
     });
 
     const incrementStrokes = () => {
-      const newStrokes = currentStrokes + 1;
-      setCurrentStrokes(newStrokes);
+      try {
+        let newStrokes = currentStrokes + 1;
+        setCurrentStrokes(newStrokes);
+
+        currentScoresheet[currentHole] = newStrokes;
+        AsyncStorage.setItem("currentScoresheet", JSON.stringify(currentScoresheet));
+      }
+      catch (error) {
+        console.log(`Error when incrementing strokes and saving Stroke Scoresheet: ${error}`);
+      }
     }
 
-    const selectHole = async (id:number) => {
+    const selectHole = (id:number) => {
       setCurrentHole(id);
 
-      // Default should still be 0
-      let strokes = await retrieveCurrentScoresheet(id) as number;
+      let strokes = currentScoresheet[id];
 
       setCurrentStrokes(strokes);
     }
 
-    const saveScoresheet = async () => {
-      try {
-        let ss = await retrieveCurrentScoresheet() as Array<number>;
-
-        if (ss == null) {
-          throw new Error("currentScoresheet is null!");
-        }
-
-        ss[currentHole] = currentStrokes;
-
-        AsyncStorage.setItem("currentScoresheet", JSON.stringify(ss));
-        
-      } catch (error) {
-        console.log(`Error when saving Stroke Scoresheet: ${error}`);
-      }
+    const resetHole = () => {
+      setCurrentStrokes(0);
+      currentScoresheet[currentHole] = 0;
+      AsyncStorage.setItem("currentScoresheet", JSON.stringify(currentScoresheet));
     }
-  
+
     return (
-      <View style={styles.container}>
-        <Text style ={styles.errorText}>rci: {recentCourseId}, hole: {currentHole}, strokes: {currentStrokes}</Text>
+      <View>
         {location && (
           <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-              latitudeDelta: 0.003,
-              longitudeDelta: 0.003,
-            }}
+          style={styles.map}
+          initialRegion={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.003,
+            longitudeDelta: 0.003,
+          }}
           >
-            <View style={{flexDirection:'row'}}>
-              <Pressable style={styles.mapButtonAdd} onPress={incrementStrokes}>
-                <Text style={styles.mapButtonText}>AddStroke</Text>
-              </Pressable>
-              <Pressable style={styles.mapButtonSave} onPress={saveScoresheet}>
-                <Text style={styles.mapButtonText}>Save</Text>
-              </Pressable>
-            </View>
             {GPSCoordinates && GPSCoordinates.Points.map(marker => (
                 <Marker
                     coordinate={{ latitude: marker.latitude, longitude: marker.longitude}}
@@ -129,12 +119,21 @@ function MapComponent() {
                     onPress={() => selectHole(marker.id)}
                     title={marker.title}
                 >
-                    <Icon isFirst={marker.id == 0}/>
+                  <Icon isFirst={marker.id == 0}/>
                 </Marker>
             ))}
-            
           </MapView>
         )}
+        <View style={styles.mapButtonTopContainer}>
+          <Pressable style={styles.mapButtonThrow} onPress={incrementStrokes}>
+            <Text style={styles.mapButtonText}>Throw</Text>
+          </Pressable>
+          <Pressable style={styles.mapButtonCurrent} disabled={true}>
+            <FontAwesome5 style={{marginRight:10}} name="compact-disc" size={24} color="black" />
+            <Text style={styles.mapButtonText}>{currentStrokes}</Text>
+          </Pressable>
+          <Ionicons name="refresh-circle" size={20} color="peru" onPress={resetHole}/>
+        </View>
       </View>
     );
   }

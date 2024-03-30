@@ -1,10 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: 
-  {
-    flex: 1,
-  },
   errorText: 
   {
     flex: 1,
@@ -18,31 +14,42 @@ const styles = StyleSheet.create({
   },
   map: 
   {
-    height: '95%',
+    height: '110%',
     width: '100%',
   },
-  mapButtonAdd: 
+  mapButtonBottomContainer:
   {
-    alignItems: 'center', //Horiz
-    backgroundColor: 'yellow',
-    borderRadius: 50,
-    height: 50,
-    justifyContent: 'center', //Vertical
-    width: 50
+    flexDirection:'row',
+    marginTop: 10,
   },
-  mapButtonSave: 
+  mapButtonTopContainer:
   {
-    alignItems: 'center', //Horiz
-    backgroundColor: 'yellow',
+    flexDirection:'row',
+    marginTop: -120,
+  },
+  mapButtonCurrent: 
+  {
+    alignItems: 'center',
+    backgroundColor: 'rosybrown',
     borderRadius: 50,
+    flex:1,
+    flexDirection:'row',
     height: 50,
-    justifyContent: 'center', //Vertical
-    marginLeft: 10,
-    width: 50
+    justifyContent: 'center',
+  },
+  mapButtonThrow: 
+  {
+    alignItems: 'center',
+    backgroundColor: 'peachpuff',
+    borderRadius: 50,
+    flex:1,
+    height: 50,
+    justifyContent: 'center',
   },
   mapButtonText:
   {
-    fontSize: 8,
+    fontSize: 20,
+    fontFamily: "Courier-BoldOblique"
   }
 });
 

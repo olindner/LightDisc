@@ -39,11 +39,11 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Add ability to store/read more course data in JSON file
 * Research solutions for Version 2
 * Removed save button and added reset button in Map Component
+* Add stroke sum count on Score page
 
 ## Doing
 * Style MapComponent
 * Add display for distance to hole calculation
-* Add stroke sum count on Score page
 
 ## To-Do
 * Debug why buttons overlap or skew text (Add and Save)

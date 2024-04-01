@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DataTable } from 'react-native-paper';
@@ -26,6 +26,11 @@ function ScoreComponent() {
     })();
   });
 
+  useEffect(() => {
+    var summed = currentScoresheet.reduce((partialSum, a) => partialSum + a, 0);
+    setScore(summed);
+  },[currentScoresheet])
+
   return (
     <View>
       <DataTable>
@@ -40,6 +45,10 @@ function ScoreComponent() {
             <DataTable.Cell numeric>{item}</DataTable.Cell>
           </DataTable.Row>
         ))}
+        <DataTable.Row key={currentScoresheet.length}>
+            <DataTable.Cell numeric textStyle={{fontWeight:"bold"}}>Score:</DataTable.Cell>
+            <DataTable.Cell numeric>{score}</DataTable.Cell>
+          </DataTable.Row>
       </DataTable>
     </View>
   );

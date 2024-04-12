@@ -5,14 +5,14 @@ import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 // React Imports
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 // Project Imports
 import GPSCoordinates from './MapData.json';
 import styles from './styles';
-import { retrieveCurrentScoresheet, setRecentCourseIdAsync } from './Utilities';
+import { computeDistance, retrieveCurrentScoresheet, setRecentCourseIdAsync } from './Utilities';
 
 interface IconProps {
   isFirst: boolean;
@@ -34,7 +34,7 @@ const getLocationPermissionsAsync = async ( setErrorMsg: React.Dispatch<React.Se
 }
 
 const setLocationAsync = async (setLocation:React.Dispatch<React.SetStateAction<LocationObjectCoords | null>>) => {
-  let currentPos = await Location.getCurrentPositionAsync({});
+  let currentPos = await Location.getCurrentPositionAsync();
         
   // FOR TESTING:
   // Todo: create method to calculate this center instead of hardcoding
@@ -47,6 +47,7 @@ const setLocationAsync = async (setLocation:React.Dispatch<React.SetStateAction<
 
 function MapComponent() {
     const [location, setLocation] = useState<LocationObjectCoords | null>(null);
+    const [distanceToHole, setDistanceToHole] = useState<string>("0.00");
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [recentCourseId, setRecentCourseId] = useState<string>("test");
     const [currentHole, setCurrentHole] = useState<number>(0);
@@ -73,6 +74,21 @@ function MapComponent() {
       })();
     });
 
+    useEffect(() => {
+      (async () => {
+        setLocationAsync(setLocation)
+        .then(() => {
+          if (location) {
+            let distance = computeDistance(location.latitude, location.longitude, GPSCoordinates.Points[currentHole].latitude, GPSCoordinates.Points[currentHole].longitude);
+            setDistanceToHole(distance);
+          }
+          else {
+            console.log(`distance is null somehow?`);
+          }
+        });
+      })();
+    }); // Could make it only update when "currentHole" changes
+
     const incrementStrokes = () => {
       try {
         let newStrokes = currentStrokes + 1;
@@ -90,7 +106,6 @@ function MapComponent() {
       setCurrentHole(id);
 
       let strokes = currentScoresheet[id];
-
       setCurrentStrokes(strokes);
     }
 
@@ -124,6 +139,9 @@ function MapComponent() {
             ))}
           </MapView>
         )}
+        <View>
+          <Text style={styles.mapDistanceText}>Distance to hole: {distanceToHole}</Text>
+        </View>
         <View style={styles.mapButtonTopContainer}>
           <Pressable style={styles.mapButtonThrow} onPress={incrementStrokes}>
             <Text style={styles.mapButtonText}>Throw</Text>

@@ -54,3 +54,24 @@ export const retrieveCurrentScoresheet = async (hole?:number) => {
     console.log(`Error when retrieving Stroke Scoresheet: ${error}`);
   }
 }
+
+export const computeDistance = (prevLat:number, prevLong:number, lat:number, long:number) => {
+  const prevLatInRad = toRad(prevLat);
+  const prevLongInRad = toRad(prevLong);
+  const latInRad = toRad(lat);
+  const longInRad = toRad(long);
+  const circumferenceOfEarthInKms = 6377.830272;
+  const ftInKm = 3280.84;
+
+  // In kilometers
+  let result = circumferenceOfEarthInKms *
+    Math.acos(
+      Math.sin(prevLatInRad) * Math.sin(latInRad) +
+        Math.cos(prevLatInRad) * Math.cos(latInRad) * Math.cos(longInRad - prevLongInRad)
+    ) * ftInKm;
+  return (result as Number).toPrecision(5);
+}
+
+function toRad(angle:number) {
+  return (angle * Math.PI) / 180;
+}

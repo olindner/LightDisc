@@ -40,10 +40,11 @@ A mobile app used to GeoLocate and track the score of players that play LightDis
 * Research solutions for Version 2
 * Removed save button and added reset button in Map Component
 * Add stroke sum count on Score page
+* Style MapComponent
 
 ## Doing
-* Style MapComponent
 * Add display for distance to hole calculation
+* Adding check for isSimulator
 
 ## To-Do
 * Debug why buttons overlap or skew text (Add and Save)

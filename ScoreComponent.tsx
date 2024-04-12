@@ -45,6 +45,7 @@ function ScoreComponent() {
             <DataTable.Cell numeric>{item}</DataTable.Cell>
           </DataTable.Row>
         ))}
+        
         <DataTable.Row key={currentScoresheet.length}>
             <DataTable.Cell numeric textStyle={{fontWeight:"bold"}}>Score:</DataTable.Cell>
             <DataTable.Cell numeric>{score}</DataTable.Cell>

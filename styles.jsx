@@ -14,18 +14,21 @@ const styles = StyleSheet.create({
   },
   map: 
   {
-    height: '110%',
-    width: '100%',
-  },
-  mapButtonBottomContainer:
-  {
-    flexDirection:'row',
-    marginTop: 10,
+    height: '105%',
   },
   mapButtonTopContainer:
   {
     flexDirection:'row',
-    marginTop: -120,
+    marginTop: -80,
+  },
+  mapDistanceText:
+  {
+    color: 'cornflowerblue',
+    fontFamily: 'Courier-Oblique',
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginLeft: 100,
+    marginTop: -100
   },
   mapButtonCurrent: 
   {
@@ -48,8 +51,8 @@ const styles = StyleSheet.create({
   },
   mapButtonText:
   {
+    fontFamily: 'Courier-BoldOblique',
     fontSize: 20,
-    fontFamily: "Courier-BoldOblique"
   }
 });
 

@@ -7,6 +7,7 @@ import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
+import DeviceInfo from 'react-native-device-info'
 import MapView, { Marker } from 'react-native-maps';
 
 // Project Imports
@@ -25,30 +26,29 @@ function Icon({ isFirst }: IconProps) {
   return <Ionicons name="golf" size={24} color="red" />;
 }
 
-const getLocationPermissionsAsync = async ( setErrorMsg: React.Dispatch<React.SetStateAction<string | null>>) => {
+const getLocationPermissionsAsync = async () => {
   let { status } = await Location.requestForegroundPermissionsAsync();
   if (status !== 'granted') {
-    setErrorMsg('Permission to access location was denied');
-    return;
+    throw new Error('Permission to access location was denied');
   }
 }
 
 const setLocationAsync = async (setLocation:React.Dispatch<React.SetStateAction<LocationObjectCoords | null>>) => {
   let currentPos = await Location.getCurrentPositionAsync();
-        
-  // FOR TESTING:
-  // Todo: create method to calculate this center instead of hardcoding
-  currentPos.coords.latitude = GPSCoordinates.MapCenter.lat;
-  currentPos.coords.longitude = GPSCoordinates.MapCenter.long;
-  //
+  let isEmulator = await DeviceInfo.isEmulator();
 
+  if (isEmulator) {
+    currentPos.coords.latitude = GPSCoordinates.MapCenter.lat;
+    currentPos.coords.longitude = GPSCoordinates.MapCenter.long;
+  }
+  
   setLocation(currentPos.coords);
+  return currentPos.coords;
 }
 
 function MapComponent() {
     const [location, setLocation] = useState<LocationObjectCoords | null>(null);
     const [distanceToHole, setDistanceToHole] = useState<string>("0.00");
-    const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [recentCourseId, setRecentCourseId] = useState<string>("test");
     const [currentHole, setCurrentHole] = useState<number>(0);
     const [currentStrokes, setCurrentStrokes] = useState<number>(0);
@@ -57,36 +57,41 @@ function MapComponent() {
   
     // First render
     useState(() => {
-      (async () => {
-        await getLocationPermissionsAsync(setErrorMsg)
-        .then(() => setLocationAsync(setLocation))
-        .then(() => setRecentCourseIdAsync(setRecentCourseId))
-        .then(async() => {
-          var ss = await retrieveCurrentScoresheet() as Array<number>;
+      try {
+        (async () => {
+          await getLocationPermissionsAsync()
+          .then(() => setLocationAsync(setLocation))
+          .then(() => setRecentCourseIdAsync(setRecentCourseId))
+          .then(async() => {
+            var ss = await retrieveCurrentScoresheet() as Array<number>;
 
-          if (ss.length == 0) {
-            ss = Array(totalHoles).fill(0);
-            AsyncStorage.setItem("currentScoresheet", JSON.stringify(ss));
-          }
+            if (ss.length == 0) {
+              ss = Array(totalHoles).fill(0);
+              AsyncStorage.setItem("currentScoresheet", JSON.stringify(ss));
+            }
 
-          setCurrentScoresheet(ss);
-        });
-      })();
+            setCurrentScoresheet(ss);
+          });
+        })();
+      } 
+      catch (error) {
+        console.log(`Error in useState: ${error}`);
+      }
     });
 
     useEffect(() => {
-      (async () => {
-        setLocationAsync(setLocation)
-        .then(() => {
-          if (location) {
-            let distance = computeDistance(location.latitude, location.longitude, GPSCoordinates.Points[currentHole].latitude, GPSCoordinates.Points[currentHole].longitude);
-            setDistanceToHole(distance);
-          }
-          else {
-            console.log(`distance is null somehow?`);
-          }
-        });
-      })();
+      try {
+        (async () => {
+          setLocationAsync(setLocation)
+          .then((coords) => {
+              let distance = computeDistance(coords.latitude, coords.longitude, GPSCoordinates.Points[currentHole].latitude, GPSCoordinates.Points[currentHole].longitude);
+              setDistanceToHole(distance);
+          });
+        })();
+      } 
+      catch (error) {
+        console.log(`Error in useEffect: ${error}`);
+      }
     }); // Could make it only update when "currentHole" changes
 
     const incrementStrokes = () => {
